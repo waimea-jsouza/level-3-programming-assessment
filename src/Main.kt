@@ -26,6 +26,7 @@ fun main() {
     FlatDarkLaf.setup()     // Flat, dark look-and-feel
     val app = App()         // Create the app model
     MainWindow(app)         // Create and show the UI, using the app model
+
 }
 
 
@@ -36,16 +37,33 @@ fun main() {
  */
 class App() {
     // Constants defining any key values
-    val MAX_CLICKS = 10
+    val planets = mutableListOf<String>()
+    var currentPlanet = 0
 
-    // Data fields
-    var clicks = 0
-
-    // Application logic functions
-    fun updateClickCount() {
-        clicks++
-        if (clicks > MAX_CLICKS) clicks = MAX_CLICKS
+    init {
+        planets.add("Mercury")
+        planets.add("Venus")
+        planets.add("Earth")
+        planets.add("Mars")
+        planets.add("Jupiter")
+        planets.add("Saturn")
+        planets.add("Uranus")
+        planets.add("Neptune")
     }
+
+    // Functions that give logic to the app (scrolling through the list)
+
+    fun nextPlanet(){
+        currentPlanet++
+        if (currentPlanet > planets.size - 1) currentPlanet = planets.size - 1
+    }
+
+    fun prevPlanet(){
+        currentPlanet--
+        if (currentPlanet < 0) currentPlanet = 0
+    }
+
+
 }
 
 
@@ -57,9 +75,11 @@ class App() {
 class MainWindow(val app: App) : JFrame(), ActionListener {
 
     // Fields to hold the UI elements
-    private lateinit var clicksLabel: JLabel
-    private lateinit var clickButton: JButton
-
+    private lateinit var textField: JTextField
+    private lateinit var rightButton: JButton
+    private lateinit var leftButton: JButton
+    private lateinit var planetLabel: JLabel
+    private lateinit var planetInfo: JLabel
     /**
      * Configure the UI and display it
      */
@@ -92,17 +112,34 @@ class MainWindow(val app: App) : JFrame(), ActionListener {
     private fun addControls() {
         val baseFont = Font(Font.SANS_SERIF, Font.PLAIN, 36)
 
-        clicksLabel = JLabel("CLICK INFO HERE")
-        clicksLabel.horizontalAlignment = SwingConstants.CENTER
-        clicksLabel.bounds = Rectangle(50, 50, 500, 100)
-        clicksLabel.font = baseFont
-        add(clicksLabel)
+        planetLabel = JLabel()
+        planetLabel.font = baseFont
+        planetLabel.bounds = Rectangle(50,50,250,100)
+        add(planetLabel)
 
-        clickButton = JButton("Click Me!")
-        clickButton.bounds = Rectangle(50,200,500,100)
-        clickButton.font = baseFont
-        clickButton.addActionListener(this)     // Handle any clicks
-        add(clickButton)
+        planetInfo = JLabel("PlanetInfo")
+        planetInfo.font = baseFont
+        planetInfo.bounds = Rectangle(300,50,500,100)
+        add(planetInfo)
+
+        textField = JTextField()
+        textField.horizontalAlignment = SwingConstants.CENTER
+        textField.bounds = Rectangle(300, 200, 250, 100)
+        textField.font = baseFont
+        add(textField)
+
+        leftButton = JButton("◀")
+        leftButton.bounds = Rectangle(50,200,100,100)
+        leftButton.font = baseFont
+        leftButton.addActionListener(this)
+        add(leftButton)
+
+        rightButton = JButton("▶")
+        rightButton.bounds = Rectangle(175,200,100,100)
+        rightButton.font = baseFont
+        rightButton.addActionListener(this)     // Handle any clicks
+        add(rightButton)
+
     }
 
 
@@ -111,14 +148,12 @@ class MainWindow(val app: App) : JFrame(), ActionListener {
      * of the application model
      */
     fun updateView() {
-        if (app.clicks == app.MAX_CLICKS) {
-            clicksLabel.text = "Max clicks reached!"
-            clickButton.isEnabled = false
-        }
-        else {
-            clicksLabel.text = "You clicked ${app.clicks} times"
-            clickButton.isEnabled = true
-        }
+        val planetName = app.planets[app.currentPlanet]
+
+        planetLabel.text = "${planetName}:"
+
+        rightButton.isEnabled = (app.currentPlanet >= 0)
+        leftButton.isEnabled = (app.currentPlanet < app.planets.size)
     }
 
     /**
@@ -128,12 +163,20 @@ class MainWindow(val app: App) : JFrame(), ActionListener {
      */
     override fun actionPerformed(e: ActionEvent?) {
         when (e?.source) {
-            clickButton -> {
-                app.updateClickCount()
+            rightButton -> {
+                // Moves to the next planet in the planets list
+                app.nextPlanet()
+                // Update the GUI
+                updateView()
+            }
+            leftButton -> {
+                app.prevPlanet()
                 updateView()
             }
         }
     }
+
+
 
 }
 

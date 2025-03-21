@@ -1,0 +1,7 @@
+Plan for Level-3 Programming Assessment:
+
+Class for planets -
+
+Stores all the planets which the user can scroll through - Done
+Opens files which contains the facts about the planet - Not Done
+Has the position of the planet within a list - Done
