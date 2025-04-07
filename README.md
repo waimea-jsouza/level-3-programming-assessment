@@ -1,5 +1,5 @@
 
-# Outer-Space Trivia
+# Basic Dungeon
 
 by Junior Souza
 
@@ -10,7 +10,6 @@ This is a programming project for **NCEA Level 3**, assessed against standard [9
 The project is written in the [Kotlin](https://kotlinlang.org) programming language and demonstrates a number of **complex programming techniques**:
 - Programming a graphical user interface (GUI)
 - Object-oriented programming (OOP) classes and objects
-- Self-defined types
 - Using non-core API, library or framework
 
 ---
@@ -25,7 +24,6 @@ The project is written in the [Kotlin](https://kotlinlang.org) programming langu
 
 ## Project Description
 
-**Outer Space game that gives you facts about the planet
-chosen from within our solar system and then allows you to scroll
-the planets. Addition of trivia element at the end once user decided they are ready.**
+**Just a basic dungeon clearing game where there is three bosses that get
+harder over time**
 
